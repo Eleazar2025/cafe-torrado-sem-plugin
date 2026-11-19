@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grão Fundo — Café torrado na semana, em Florianópolis</title>
+  <meta name="description" content="Micro-torrefação em Florianópolis. Torra semanal em lotes pequenos, data de torra impressa em cada pacote e grãos direto do produtor.">
+  <style>
+    /* ===== Variáveis ===== */
+    :root {
+      --color-bg: #faf6ef;
+      --color-bg-alt: #f1e8da;
+      --color-text: #2a1d15;
+      --color-muted: #6b5a4d;
+      --color-dark: #1f1510;
+      --color-dark-soft: #2d1f17;
+      --color-primary: #b4481f;
+      --color-primary-hover: #8f3615;
+      --color-cream-text: #f6ecdd;
+      --color-line: #e0d2bf;
+      --color-gold: #e0a85a;
+
+      --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(42, 29, 21, 0.12);
+      --max: 1120px;
+      --gutter: 20px;
+      --header-h: 64px;
+    }
+
+    /* ===== Base ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 8px); }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--color-text);
+      background: var(--color-bg);
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0 0 0.5em; font-weight: 700; letter-spacing: -0.01em; }
+    h1 { font-size: clamp(2.3rem, 7.5vw, 4.4rem); }
+    h2 { font-size: clamp(1.8rem, 5vw, 2.8rem); }
+    h3 { font-size: 1.35rem; }
+    p { margin: 0 0 1em; }
+    a { color: inherit; }
+
+    .container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+    .section { padding: 72px 0; }
+    .section-head { max-width: 640px; margin-bottom: 40px; }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+    }
+    .lead { font-size: 1.15rem; color: var(--color-muted); }
+
+    :focus-visible { outline: 3px solid var(--color-gold); outline-offset: 3px; border-radius: 4px; }
+
+    /* ===== Botões ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 50px;
+      padding: 13px 26px;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      border-radius: 999px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--color-primary); color: #fff; }
+    .btn-primary:hover { background: var(--color-primary-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(180, 72, 31, 0.35); }
+    .btn-ghost { background: transparent; color: var(--color-cream-text); border-color: rgba(246, 236, 221, 0.55); }
+    .btn-ghost:hover { background: rgba(246, 236, 221, 0.14); border-color: var(--color-cream-text); }
+    .btn-outline { background: transparent; color: var(--color-text); border-color: var(--color-text); }
+    .btn-outline:hover { background: var(--color-text); color: var(--color-bg); }
+    .btn-block { width: 100%; }
+
+    /* ===== Cabeçalho ===== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: var(--header-h);
+      background: rgba(31, 21, 16, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--color-cream-text);
+      transition: box-shadow 0.25s;
+    }
+    .site-header.is-scrolled { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
+    .header-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .brand {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-dot { width: 12px; height: 18px; border-radius: 50%; background: var(--color-primary); transform: rotate(20deg); box-shadow: inset -2px 0 0 rgba(0,0,0,0.25); position: relative; }
+    .brand-dot::after { content: ""; position: absolute; left: 50%; top: 10%; bottom: 10%; width: 2px; margin-left: -1px; background: var(--color-dark); border-radius: 2px; }
+
+    .nav-toggle {
+      width: 46px; height: 46px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; border: 0; color: inherit; cursor: pointer; border-radius: 10px;
+    }
+    .nav-toggle:hover { background: rgba(246, 236, 221, 0.12); }
+    .nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after {
+      display: block; width: 24px; height: 2px; background: currentColor; border-radius: 2px; transition: transform 0.25s, opacity 0.2s;
+    }
+    .nav-toggle-bars { position: relative; }
+    .nav-toggle-bars::before, .nav-toggle-bars::after { content: ""; position: absolute; left: 0; }
+    .nav-toggle-bars::before { top: -7px; }
+    .nav-toggle-bars::after { top: 7px; }
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bars::after { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav {
+      position: absolute;
+      top: var(--header-h);
+      left: 0; right: 0;
+      background: var(--color-dark);
+      padding: 8px var(--gutter) 24px;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      border-top: 1px solid rgba(246, 236, 221, 0.12);
+    }
+    .nav.is-open { display: flex; }
+    .nav a {
+      text-decoration: none;
+      padding: 14px 4px;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(246, 236, 221, 0.08);
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: var(--color-gold); }
+    .nav .btn { margin-top: 14px; border-bottom: 2px solid transparent; }
+    .nav .btn:hover { color: #fff; }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative;
+      color: var(--color-cream-text);
+      background: var(--color-dark);
+      min-height: calc(100svh - var(--header-h));
+      min-height: calc(100vh - var(--header-h));
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 55%; }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(31, 21, 16, 0.72) 0%, rgba(31, 21, 16, 0.82) 100%);
+    }
+    .hero .container { position: relative; z-index: 2; padding-top: 56px; padding-bottom: 56px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid rgba(246, 236, 221, 0.35);
+      border-radius: 999px;
+      font-size: 0.88rem;
+      margin-bottom: 24px;
+      background: rgba(31, 21, 16, 0.4);
+    }
+    .hero-tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--color-gold); }
+    .hero h1 { max-width: 14ch; }
+    .hero h1 em { font-style: italic; color: var(--color-gold); }
+    .hero p { max-width: 520px; font-size: 1.2rem; color: rgba(246, 236, 221, 0.9); margin-bottom: 32px; }
+    .hero-actions { display: flex; flex-direction: column; gap: 12px; }
+
+    .strip { background: var(--color-dark-soft); color: var(--color-cream-text); }
+    .strip-list { list-style: none; margin: 0; padding: 20px var(--gutter); max-width: var(--max); margin-inline: auto; display: grid; gap: 10px; font-size: 0.98rem; }
+    .strip-list li { display: flex; align-items: center; gap: 10px; }
+    .strip-list li::before { content: ""; flex: none; width: 8px; height: 8px; background: var(--color-gold); border-radius: 50%; }
+
+    /* ===== Cafés ===== */
+    .cards { display: grid; gap: 20px; }
+    .card {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      padding: 28px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .card::before { content: ""; position: absolute; top: 0; left: 24px; right: 24px; height: 4px; border-radius: 0 0 4px 4px; background: var(--card-accent, var(--color-primary)); }
+    .card-1 { --card-accent: #c99a5b; }
+    .card-2 { --card-accent: #b4481f; }
+    .card-3 { --card-accent: #7d2a3a; }
+    .card-region { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 4px; }
+    .card h3 { font-size: 1.7rem; }
+    .card-feel { color: var(--color-text); flex: 1; }
+    .card-badge { display: inline-block; align-self: flex-start; font-size: 0.82rem; font-weight: 700; background: var(--color-bg-alt); border-radius: 999px; padding: 4px 12px; margin-bottom: 16px; }
+    .intensity { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 0.92rem; color: var(--color-muted); }
+    .intensity-dots { display: flex; gap: 5px; }
+    .intensity-dots span { width: 12px; height: 12px; border-radius: 50%; background: var(--color-line); }
+    .intensity-dots span.on { background: var(--color-text); }
+    .card-foot { display: flex; align-items: baseline; justify-content: space-between; border-top: 1px solid var(--color-line); padding-top: 16px; margin-bottom: 16px; }
+    .price { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
+    .price-note { font-size: 0.88rem; color: var(--color-muted); }
+
+    /* ===== Diferenciais ===== */
+    .dark { background: var(--color-dark); color: var(--color-cream-text); }
+    .dark .eyebrow { color: var(--color-gold); }
+    .dark .lead { color: rgba(246, 236, 221, 0.78); }
+    .split { display: grid; gap: 36px; align-items: center; }
+    .photo-frame { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-wide { aspect-ratio: 4 / 3; }
+    .photo-wide img { transform: scale(1.04); }
+    .photo-tall { aspect-ratio: 4 / 5; }
+    .points { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 26px; counter-reset: ponto; }
+    .points li { position: relative; padding-left: 62px; counter-increment: ponto; }
+    .points li::before {
+      content: counter(ponto);
+      position: absolute; left: 0; top: 0;
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
+      border: 2px solid var(--color-gold); color: var(--color-gold);
+    }
+    .points h3 { font-size: 1.25rem; margin-bottom: 4px; }
+    .points p { margin: 0; color: rgba(246, 236, 221, 0.78); }
+
+    /* ===== Escolha ===== */
+    .choose { background: var(--color-bg-alt); }
+    .profiles { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 14px; }
+    .profile {
+      background: var(--color-bg);
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .profile:hover { transform: translateX(4px); box-shadow: var(--shadow); border-color: var(--color-primary); }
+    .profile-who { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
+    .profile-pick { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin: 2px 0 4px; color: var(--color-primary); }
+    .profile p { margin: 0; color: var(--color-muted); font-size: 1rem; }
+
+    /* ===== Depoimentos ===== */
+    .quotes { display: grid; gap: 20px; }
+    .quote {
+      margin: 0;
+      background: #fff;
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      display: flex; flex-direction: column;
+    }
+    .quote::before { content: "\201C"; font-family: var(--font-display); font-size: 4rem; line-height: 0.6; color: var(--color-primary); height: 28px; }
+    .quote p { font-size: 1.08rem; flex: 1; }
+    .quote footer { font-size: 0.95rem; color: var(--color-muted); }
+    .quote footer strong { color: var(--color-text); display: block; }
+
+    /* ===== Loja ===== */
+    .store { background: var(--color-bg-alt); }
+    .store-info { list-style: none; margin: 24px 0 28px; padding: 0; display: grid; gap: 8px; }
+    .store-info strong { display: inline-block; min-width: 92px; }
+
+    /* ===== Assinatura ===== */
+    .subscribe { background: var(--color-dark); color: var(--color-cream-text); }
+    .subscribe .eyebrow { color: var(--color-gold); }
+    .offer-list { list-style: none; margin: 24px 0 32px; padding: 0; display: grid; gap: 14px; }
+    .offer-list li { display: flex; gap: 14px; align-items: flex-start; }
+    .offer-list li::before { content: "✓"; flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--color-primary); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; margin-top: 2px; }
+    .offer-big { font-family: var(--font-display); font-size: clamp(3rem, 10vw, 4.6rem); line-height: 1; color: var(--color-gold); font-weight: 700; }
+    .fineprint { font-size: 0.88rem; color: rgba(246, 236, 221, 0.6); margin-top: 14px; margin-bottom: 0; }
+
+    /* ===== Rodapé ===== */
+    .site-footer { background: #150e0a; color: rgba(246, 236, 221, 0.8); padding: 56px 0 28px; font-size: 0.98rem; }
+    .footer-grid { display: grid; gap: 32px; }
+    .site-footer h3 { font-family: var(--font-body); font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 12px; }
+    .site-footer .brand { color: var(--color-cream-text); margin-bottom: 12px; }
+    .site-footer p { margin-bottom: 6px; }
+    .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    .site-footer a { text-decoration: none; transition: color 0.2s; }
+    .site-footer a:hover { color: var(--color-gold); text-decoration: underline; }
+    .footer-bottom { border-top: 1px solid rgba(246, 236, 221, 0.12); margin-top: 40px; padding-top: 20px; font-size: 0.85rem; color: rgba(246, 236, 221, 0.55); }
+
+    /* ===== Animação de entrada (só com JS) ===== */
+    .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .js .reveal.is-visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .reveal { opacity: 1; transform: none; transition: none; }
+      .btn, .card, .profile { transition: none; }
+    }
+
+    /* ===== Tablet ===== */
+    @media (min-width: 640px) {
+      :root { --gutter: 32px; }
+      .section { padding: 96px 0; }
+      .hero-actions { flex-direction: row; flex-wrap: wrap; }
+      .strip-list { grid-template-columns: repeat(3, auto); justify-content: space-between; }
+      .quotes { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ===== Desktop ===== */
+    @media (min-width: 960px) {
+      .nav-toggle { display: none; }
+      .nav {
+        position: static; display: flex; flex-direction: row; align-items: center;
+        padding: 0; gap: 28px; background: transparent; border: 0;
+      }
+      .nav a { padding: 8px 0; border: 0; font-size: 0.98rem; }
+      .nav .btn { margin: 0; padding: 9px 20px; min-height: 42px; }
+      .cards { grid-template-columns: repeat(3, 1fr); }
+      .split { grid-template-columns: 1fr 1fr; gap: 64px; }
+      .split-reverse .split-media { order: 2; }
+      .quotes { grid-template-columns: repeat(3, 1fr); }
+      .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+      .photo-tall { aspect-ratio: 4 / 5; max-height: 640px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#topo" class="brand" aria-label="Grão Fundo, ir para o início">
+        <span class="brand-dot" aria-hidden="true"></span>Grão Fundo
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
+        <span class="nav-toggle-bars"></span>
+      </button>
+      <nav class="nav" id="menu" aria-label="Navegação principal">
+        <a href="#cafes">Os cafés</a>
+        <a href="#diferenca">Por que é diferente</a>
+        <a href="#escolher">Qual escolher</a>
+        <a href="#depoimentos">Clientes</a>
+        <a href="#loja">A loja</a>
+        <a href="#assinatura" class="btn btn-primary">Quero experimentar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="topo">
+
+    <!-- Seção principal -->
+    <section class="hero" aria-labelledby="titulo-hero">
+      <img class="hero-img" src="images/alexas_fotos-coffee-beans-1291656_1920.jpg" alt="Close de grãos de café recém-torrados, marrons e brilhantes, empilhados sobre uma superfície clara">
+      <div class="container">
+        <span class="hero-tag">Torra feita toda semana, em Florianópolis</span>
+        <h1 id="titulo-hero">Café torrado <em>nesta semana</em>, não no ano passado.</h1>
+        <p>Cada pacote chega com a data da torra impressa. Em lotes pequenos, direto de produtores que a gente conhece, e nunca fica mais de trinta dias na prateleira.</p>
+        <div class="hero-actions">
+          <a href="#cafes" class="btn btn-primary">Quero experimentar</a>
+          <a href="#loja" class="btn btn-ghost">Conhecer a loja</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="strip">
+      <ul class="strip-list">
+        <li>Torra uma vez por semana</li>
+        <li>Data de torra em todo pacote</li>
+        <li>Grãos direto do produtor</li>
+      </ul>
+    </div>
+
+    <!-- Cafés -->
+    <section class="section" id="cafes" aria-labelledby="titulo-cafes">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Nossos cafés</span>
+          <h2 id="titulo-cafes">Três cafés. Um deles é o seu.</h2>
+          <p class="lead">Sem lista enorme para te deixar perdido. Descrevemos cada um pelo que você vai sentir na xícara. Todos os pacotes têm 250 g.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card card-1 reveal">
+            <div class="card-region">Cerrado Mineiro · MG</div>
+            <h3>Cerrado Mineiro</h3>
+            <span class="card-badge">Bom para começar</span>
+            <p class="card-feel">Doce e macio, lembra chocolate ao leite e castanha. Quase não amarga, então é um ótimo primeiro passo fora do café de mercado.</p>
+            <div class="intensity" aria-label="Intensidade 2 de 5, suave">
+              <div class="intensity-dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div>
+              <span>Suave</span>
+            </div>
+            <div class="card-foot"><span class="price">R$ 42</span><span class="price-note">pacote de 250 g</span></div>
+            <a href="#assinatura" class="btn btn-outline btn-block">Quero este</a>
+          </article>
+
+          <article class="card card-2 reveal">
+            <div class="card-region">Alta Mogiana · SP</div>
+            <h3>Alta Mogiana</h3>
+            <span class="card-badge">O queridinho da casa</span>
+            <p class="card-feel">Notas de caramelo com um toque cítrico de laranja que deixa tudo mais vivo. Equilibrado: agrada quem gosta de café mais cheio e quem prefere mais leve.</p>
+            <div class="intensity" aria-label="Intensidade 3 de 5, equilibrado">
+              <div class="intensity-dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+              <span>Equilibrado</span>
+            </div>
+            <div class="card-foot"><span class="price">R$ 46</span><span class="price-note">pacote de 250 g</span></div>
+            <a href="#assinatura" class="btn btn-outline btn-block">Quero este</a>
+          </article>
+
+          <article class="card card-3 reveal">
+            <div class="card-region">Chapada Diamantina · BA</div>
+            <h3>Chapada Diamantina</h3>
+            <span class="card-badge">Para sair do óbvio</span>
+            <p class="card-feel">Frutas vermelhas e cacau, com bastante coisa acontecendo em cada gole. Mais complexo: ideal para quem já gosta de café e quer descobrir o que ele pode ser.</p>
+            <div class="intensity" aria-label="Intensidade 4 de 5, marcante">
+              <div class="intensity-dots" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+              <span>Marcante</span>
+            </div>
+            <div class="card-foot"><span class="price">R$ 58</span><span class="price-note">pacote de 250 g</span></div>
+            <a href="#assinatura" class="btn btn-outline btn-block">Quero este</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Por que é diferente -->
+    <section class="section dark" id="diferenca" aria-labelledby="titulo-diferenca">
+      <div class="container split">
+        <div class="split-media reveal">
+          <div class="photo-frame photo-wide">
+            <img src="images/christoph-coffee-171653_1920.jpg" alt="Xícara laranja tombada sobre o pires, derramando grãos de café torrados sobre uma bancada escura de pedra" loading="lazy">
+          </div>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">Por que é diferente</span>
+          <h2 id="titulo-diferenca">Café fresco muda o gosto. Dá para sentir.</h2>
+          <p class="lead">Café fica bom nas primeiras semanas depois da torra. Depois, vai perdendo o perfume e o doce. A gente organizou tudo em volta disso.</p>
+          <ol class="points">
+            <li>
+              <h3>Torra semanal, com data no pacote</h3>
+              <p>Torramos uma vez por semana, em lotes pequenos. A data está impressa em cada pacote, então você sabe exatamente o que está comprando. Nada passa de trinta dias na prateleira.</p>
+            </li>
+            <li>
+              <h3>Direto de quem planta</h3>
+              <p>Compramos dos mesmos produtores há anos, sem intermediário. Eles recebem melhor, e a gente sabe de onde vem cada grão.</p>
+            </li>
+            <li>
+              <h3>Guia de preparo em todo pedido</h3>
+              <p>Junto com o café vai um guia simples: quanto de pó, quanta água, quanto tempo. Funciona com coador de pano, de papel ou prensa francesa.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ajuda para escolher -->
+    <section class="section choose" id="escolher" aria-labelledby="titulo-escolher">
+      <div class="container split split-reverse">
+        <div class="split-media reveal">
+          <div class="photo-frame photo-tall">
+            <img src="images/chernyshart-coffee-9817625_1920.jpg" alt="Xícara branca de café com leite e desenho de folha na espuma, cercada de grãos torrados e bombons de chocolate" loading="lazy">
+          </div>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">Ainda na dúvida?</span>
+          <h2 id="titulo-escolher">Não sabe qual pegar?</h2>
+          <p class="lead">Não precisa entender de café. Diga como você toma e a gente diz por onde começar.</p>
+          <ul class="profiles">
+            <li class="profile">
+              <div class="profile-who">Quem toma com leite</div>
+              <div class="profile-pick">Cerrado Mineiro</div>
+              <p>O doce de chocolate ao leite aparece mesmo com leite na xícara, e o café não some.</p>
+            </li>
+            <li class="profile">
+              <div class="profile-who">Quem toma puro</div>
+              <div class="profile-pick">Alta Mogiana</div>
+              <p>Caramelo e laranja ficam à mostra sem açúcar. É o mais fácil de gostar logo de cara.</p>
+            </li>
+            <li class="profile">
+              <div class="profile-who">Quem quer experimentar de tudo</div>
+              <div class="profile-pick">Os três, um de cada</div>
+              <p>Prove os três lado a lado e descubra o seu favorito. Pela assinatura, você ainda ganha 15% de desconto.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="section" id="depoimentos" aria-labelledby="titulo-depoimentos">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Quem já pediu</span>
+          <h2 id="titulo-depoimentos">O primeiro pacote costuma não ser o último.</h2>
+        </div>
+        <div class="quotes">
+          <blockquote class="quote reveal">
+            <p>Eu achava que não gostava de café puro. Era só café velho. Com o Cerrado, fiquei surpresa de tomar sem açúcar e achar doce.</p>
+            <footer><strong>Marina Duarte</strong>Florianópolis, SC</footer>
+          </blockquote>
+          <blockquote class="quote reveal">
+            <p>Ver a data da torra no pacote me deu confiança. E o guia de preparo me ajudou a acertar o coador logo na primeira semana.</p>
+            <footer><strong>Rafael Nogueira</strong>Curitiba, PR</footer>
+          </blockquote>
+          <blockquote class="quote reveal">
+            <p>Assinei a Chapada Diamantina e todo mês chego ansioso pra abrir o pacote. Cheiro de fruta vermelha pela casa toda.</p>
+            <footer><strong>Camila Ferraz</strong>Porto Alegre, RS</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loja -->
+    <section class="section store" id="loja" aria-labelledby="titulo-loja">
+      <div class="container split">
+        <div class="split-media reveal">
+          <div class="photo-frame photo-wide">
+            <img src="images/chernyshart-coffee-9817634_1920.jpg" alt="Balcão de madeira junto à janela de uma cafeteria ao entardecer, com luminárias acesas e xícaras fumegando" loading="lazy">
+          </div>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">A loja</span>
+          <h2 id="titulo-loja">Passe aqui para tomar um café com a gente.</h2>
+          <p class="lead">Na loja você sente o cheiro da torra, escolhe o grão com a ajuda de quem torrou e leva o pacote ainda fresco.</p>
+          <ul class="store-info">
+            <li><strong>Endereço</strong> Rua das Algas, 128 · Lagoa da Conceição</li>
+            <li><strong>Horário</strong> Seg a sáb, 8h às 19h</li>
+            <li><strong>Dia de torra</strong> Terças, pela manhã</li>
+          </ul>
+          <a href="#contato" class="btn btn-outline">Ver como chegar</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assinatura -->
+    <section class="section subscribe" id="assinatura" aria-labelledby="titulo-assinatura">
+      <div class="container split">
+        <div class="reveal">
+          <span class="eyebrow">Assinatura mensal</span>
+          <div class="offer-big" aria-hidden="true">15% off</div>
+          <h2 id="titulo-assinatura">Café fresco chegando todo mês.</h2>
+          <p class="lead">Escolha seu café, receba na data certa e economize. Pause ou cancele quando quiser, sem burocracia.</p>
+          <ul class="offer-list">
+            <li><span><strong>15% de desconto</strong> em todos os pacotes da assinatura.</span></li>
+            <li><span><strong>Frete grátis</strong> em pedidos acima de R$ 120.</span></li>
+            <li><span>Café torrado na semana do envio, com a data no pacote e o guia de preparo.</span></li>
+          </ul>
+          <a href="#contato" class="btn btn-primary">Quero experimentar</a>
+          <p class="fineprint">Troque de café a qualquer momento. Sem fidelidade.</p>
+        </div>
+        <div class="split-media reveal">
+          <div class="photo-frame photo-wide">
+            <img src="images/chernyshart-coffee-9817665_1920.jpg" alt="Visão de cima de uma mesa clara com dois croissants polvilhados de açúcar, uma xícara de cappuccino e morangos frescos" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" id="contato">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#topo" class="brand"><span class="brand-dot" aria-hidden="true"></span>Grão Fundo</a>
+          <p>Micro-torrefação artesanal. Torra semanal, lotes pequenos, data no pacote.</p>
+        </div>
+        <div>
+          <h3>Loja</h3>
+          <address style="font-style: normal;">
+            <p>Rua das Algas, 128<br>Lagoa da Conceição<br>Florianópolis · SC · 88062-000</p>
+          </address>
+        </div>
+        <div>
+          <h3>Horário</h3>
+          <p>Segunda a sábado: 8h às 19h<br>Domingo: fechado</p>
+        </div>
+        <div>
+          <h3>Contato</h3>
+          <ul>
+            <li><a href="mailto:ola@graofundo.com.br">ola@graofundo.com.br</a></li>
+            <li><a href="https://wa.me/5548900000000">WhatsApp (48) 90000-0000</a></li>
+            <li><a href="https://instagram.com/graofundo">Instagram @graofundo</a></li>
+            <li><a href="https://facebook.com/graofundo">Facebook</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer-bottom">© 2026 Grão Fundo Torrefação. Endereço e contatos ilustrativos.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var root = document.documentElement;
+      root.classList.add('js');
+
+      var header = document.querySelector('.site-header');
+      var toggle = document.querySelector('.nav-toggle');
+      var menu = document.querySelector('.nav');
+
+      // Menu mobile
+      function setMenu(open) {
+        menu.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      }
+      toggle.addEventListener('click', function () {
+        setMenu(toggle.getAttribute('aria-expanded') !== 'true');
+      });
+      menu.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setMenu(false);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setMenu(false);
+      });
+
+      // Sombra no cabeçalho ao rolar
+      function onScroll() {
+        header.classList.toggle('is-scrolled', window.scrollY > 8);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // Entrada suave das seções
+      var items = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        items.forEach(function (el) { io.observe(el); });
+      } else {
+        items.forEach(function (el) { el.classList.add('is-visible'); });
+      }
+    })();
+  </script>
+</body>
+</html>
